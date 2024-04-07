@@ -6,6 +6,15 @@ dynamodb = boto3.resource('dynamodb', region_name='us-east-2')
 
 def lambda_handler(event, context):
     try:
+
+        headers = {
+        'Access-Control-Allow-Origin': '*',  
+        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Headers': 'Content-Type'
+        }
+
+
+        
         table = dynamodb.Table('TodoList')
         body = json.loads(event['body'])
 
@@ -34,7 +43,7 @@ def lambda_handler(event, context):
             }
         )
         
-        return {'statusCode': 200, 'body': json.dumps('Operation successful')}
+        return {'statusCode': 200, 'headers': headers, 'body': json.dumps('Operation successful')}
 
     except Exception as e:
-        return {'statusCode': 500, 'body': json.dumps({'error': str(e)})}
+        return {'statusCode': 500, 'headers': headers, 'body': json.dumps({'error': str(e)})}
