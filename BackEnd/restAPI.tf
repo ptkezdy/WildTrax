@@ -3,7 +3,7 @@ resource "aws_apigatewayv2_api" "lambda" {
   protocol_type = "HTTP"
   cors_configuration {
     allow_origins = ["*"] // allows anyone to send request, need to change 
-    allow_methods = ["POST", "GET", "OPTIONS"]
+    allow_methods = ["POST", "GET", "OPTIONS", "PUT"]
     allow_headers = ["content-type"]
     max_age       = 300
   }
@@ -87,7 +87,7 @@ resource "aws_apigatewayv2_integration" "put_task" {
 resource "aws_apigatewayv2_route" "put_task" {
   api_id = aws_apigatewayv2_api.lambda.id
 
-  route_key = "POST /putTask"
+  route_key = "PUT /putTask"
   target    = "integrations/${aws_apigatewayv2_integration.put_task.id}"
 }
 
