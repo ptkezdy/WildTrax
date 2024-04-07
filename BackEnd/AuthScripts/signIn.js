@@ -2,13 +2,13 @@ const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
 
 // Cognito User Pool Id and App Client ID
 const poolData = {
-    UserPoolId: 'us-east-2_PbmKiUp9w', // Your Cognito User Pool ID
-    ClientId: '5mqnor5ufuojmi9c8q7dq9tfm0', // Your Cognito App Client ID
+    UserPoolId: 'us-east-2_PbmKiUp9w', 
+    ClientId: '5mqnor5ufuojmi9c8q7dq9tfm0', 
 };
 
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
-document.getElementById('signInForm').addEventListener('submit', function(event) {
+document.getElementById('signIn').addEventListener('submitBtn', function(event) {
     event.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
@@ -41,6 +41,7 @@ document.getElementById('signInForm').addEventListener('submit', function(event)
         },
         onFailure: function(err) {
             console.error('Sign-in failed:', err);
+            alert('Sign-in failed: ', err)
         },
     });
 });
