@@ -1,0 +1,15 @@
+terraform-provider-archive_v2.4.2_x5
+
+.terraform/*
+*.tfstate
+*.tfstate.backup
+*.tfvars
+.terraform.lock.hcl
+
+terraform-provider-aws_v5.41.0_x5.exe
+terraform-provider-aws_v5.41.0_x5.exe
+terraform-provider-archive_v2.4.2_x5.exe
+terraform-provider-aws_v5.44.0_x5
+
+
+BackEnd/node_modules
