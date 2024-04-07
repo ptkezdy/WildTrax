@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- 
+      This is an HTML comment
+      You can write text in a comment and the content won't be visible in the page
+    -->
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!--
+      This is the page head - it contains info the browser uses
+      Like the title, which appears on the browser tab but not inside the page
+      Further down you'll see the content that displays in the page
+    -->
+    <title>WildTrax</title>
+
+    <!-- The website stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+
+    <!-- The website JavaScript file -->
+    
+  </head>
+  <body>
+    <!--
+      The body includes the content you see in the page
+      Each element is defined using tags, like this <div></div>
+      The attributes like class="wrapper" let us style elements in the CSS
+    -->
+    <div class="wrapper">
+      <div class="content" role="main">
+        <h1 class="title">WildTrax</h1>
+        <div class="container">
+          <div class="column">
+            <h2 style="margin-left: -360px;">Introduction</h2>
+            <iframe width="560" style="position: absolute; margin-left: -360px; margin-top: 0px;" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+          </div>
+          <div class="column">
+            <h2 style="margin-left: 60px;">Welcome Back!</h2>
+            <form id="signIn">
+              
+              <input type="text" id="fname" name="fname" placeholder="Email" style="width: 400px; margin-left: 60px;"/><br />
+              <br />
+              <input type="password" id="password" name="password" placeholder="Password" style="width: 400px; margin-left: 60px;"/><br />
+
+              <p>
+                <a href="calendar.html"
+                  ><button type="button" 
+                           id="submitBtn"
+                           style="width: 400px; margin-left: 60px;"
+                           onmouseover="this.style.background='#8b0201'; this.style.color='#FFFFFF'; this.style.borderColor='#000000';" 
+                           onmouseout="this.style.background='#F3F3F3'; this.style.color='#8b0201'; this.style.borderColor='#000000';" value="Sign in"><strong>Sign In</strong></button></a
+                >
+              </p>
+            </form>
+            <div class="instructions">
+              <h2 style="margin-left: 60px;">Our Story</h2>
+
+              <pre style="margin-left: 60px; font-family: inherit;" >
+For our submission to Wildhacks 2024, we present to
+you: <strong>WildTrax</strong>. Wildtrax is an all-in-one system that 
+lets you add your events and tasks to a calendar and
+to-do list at the same time, letting users track events
+and giving them adviceon what they should work. Our goal
+with this project is to help everybusy person - whether
+they're students, workers, teachers, or someone else -
+make the most of the one resource we can't reclaim: <strong>time</strong>.
+In doing so we hope to help better the world by making
+everyone more productive.
+              </pre>
+
+              <p style="color: #8b0201; margin-left: 60px;">
+                <strong>Are you interested?</strong>
+              </p>
+              <a href="signup.html"
+                    ><button type="button" id="signUpBtn" style="width: 400px; margin-left: 60px;" onmouseover="this.style.background='#8b0201'; this.style.color='#FFFFFF'; this.style.borderColor='#000000';" onmouseout="this.style.background='#F3F3F3'; this.style.color='#8b0201'; this.style.borderColor='#000000';">
+                <strong>Sign Up!</strong></button></a
+                  >
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- The footer holds our remix button — you can keep or delete it ✂ -->
+  </body>
+</html>

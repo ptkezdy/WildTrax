@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>To-Do</title>
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+      table {
+        width: 70%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid #000000;
+        text-align: center;
+        padding: 20px;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1><center>To-Do</center></h1>
+    <div class="container"></div>
+
+    <center>
+      <button type="button" class="collapsible">
+        <center><strong>Menu</strong></center>
+      </button>
+      <div class="content">
+        <ul>
+          <br />
+          <br />
+          <li><a href="calendar.html">Calendar</a></li>
+          <li><a href="addevent.html">Add Event</a></li>
+          <li><a href="addtask.html">Add Task</a></li>
+          <li><a href="index.html">Sign Out</a></li>
+          <br />
+          <br />
+        </ul>
+      </div>
+      <style>
+        .content {
+          padding: 0 18px;
+          background-color: white;
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.2s ease-out;
+        }
+      </style>
+
+      <br />
+      <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight) {
+              content.style.maxHeight = null;
+            } else {
+              content.style.maxHeight = content.scrollHeight + "px";
+            }
+          });
+        }
+      </script>
+    </center>
+    <br />
+    <table
+      style="margin-left: auto; margin-right: auto; border-collapse: collapse"
+      id="taskTable"
+      class="styled-table"
+    >
+      <thead>
+        <tr style="border: 1px solid #dddddd">
+          <th style="width: 20%; background-color: #f2f2f2; border: 1px solid #dddddd">Date</th>
+          <th id="leHead" style="border: none">Task List</th>
+          <th style="width: 10%; background-color: #f2f2f2; border: 1px solid #dddddd">Complete</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+      </tbody>
+    </table>
+    <br />
+
+    <center>
+      <a href="addtask.html">
+        <button
+          type="button"
+          id="addTaskBtn"
+          style="width: 70%"
+          onmouseover="this.style.background='#8b0201'; this.style.color='#F3F3F3'; this.style.borderColor='#000000';"
+          onmouseout="this.style.background='#F3F3F3'; this.style.color='#8b0201'; this.style.borderColor='#000000';"
+        >
+          <strong>Add Task</strong>
+        </button></a
+      >
+    </center>
+
+    <script>
+      let tasks = []
+      window.onload = function () {
+        fetch(
+          "https://gqn16jjel6.execute-api.us-east-2.amazonaws.com/serverless_lambda_stage/getTask?userID=user123",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Error");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("got data: ", data);
+            tasks = data;
+            console.log(tasks)
+            updateTaskTable(tasks);
+          })
+          .catch((error) => {
+            console.log("Error: ", error);
+          });
+      };
+      
+      
+      
+      /*
+      function updateTaskTable(tasks) {
+        var table = document.getElementById("taskTable");
+        tasks.forEach((item, index) => {
+          if (item.type == 'task') {
+            var row = table.insertRow(index + 1);
+
+            var cell1 = row.insertCell(0);
+            cell1.innerHTML = item.endDate;
+
+            var cell2 = row.insertCell(1);
+            cell2.innerHTML = item.name;
+
+            var cell3 = row.insertCell(2);
+            var checkBox = document.createElement("input");
+            checkBox.type = "checkbox";
+            checkBox.checked = item.complete;
+            checkBox.classList.add("checkbox-style"); // Add the checkbox class
+            cell3.appendChild(checkBox);
+          }
+        });
+      }*/
+      
+      //sort
+      
+      
+      function updateTaskTable(tasks) {
+  var table = document.getElementById("taskTable");
+        tasks.sort((a, b) => {
+    // Convert strings to Date objects for comparison
+        var dateA = new Date(a.endDate);
+        var dateB = new Date(b.endDate);
+        return dateA - dateB;
+  });
+  tasks.forEach((item, index) => {
+    
+      var row = table.insertRow(index + 1);
+      
+      var inputString = item.endDate;
+      var indexOfT = inputString.indexOf('T');
+      
+      //If 'T' is not found, return the original string as preceding and an empty string as following
+      if (indexOfT === -1) {
+        var cell1 = row.insertCell(0);
+        cell1.innerHTML = item.endDate;
+      }
+      else {
+        // Split the string based on the index of 'T'
+        var datestr = inputString.substring(0, indexOfT);
+        var time = inputString.substring(indexOfT + 1);
+      
+        var hour = parseInt(time.substring(0, 2)); // Convert hour to integer
+        var minutes = time.substring(3);
+        
+        var time2 = ""; // Initialize time2 variable
+        
+        if (hour < 12) {
+          time2 = hour + ":" + minutes + " AM";
+        }
+        else {
+          hour = (hour - 12) || 12; // Ensure hour is between 1-12 for PM
+          time2 = hour + ":" + minutes + " PM";
+        }
+        
+        var cell1 = row.insertCell(0);
+        cell1.innerHTML = datestr + " " + time2;
+      }
+      
+      var cell2 = row.insertCell(1);
+      cell2.innerHTML = item.name;
+
+      var cell3 = row.insertCell(2);
+  
+      // Create the container for the custom checkbox
+      var checkboxContainer = document.createElement("label");
+      checkboxContainer.classList.add("checkbox-container");
+
+      // Create the checkbox input element
+      var checkBox = document.createElement("input");
+      checkBox.type = "checkbox";
+      checkBox.className = "checkBox"
+      checkBox.checked = item.complete;
+      checkBox.onclick = "completeTask()";
+      checkBox.classList.add("checkbox-style"); // Add the checkbox class
+
+      // Create the checkmark icon span element with X
+      var checkmark = document.createElement("span");
+      checkmark.classList.add("checkmark");
+      checkmark.innerHTML = "✕"; // X symbol
+
+      // Append the checkbox and checkmark to the container
+      checkboxContainer.appendChild(checkBox);
+      checkboxContainer.appendChild(checkmark);
+
+      // Append the container to the cell
+      cell3.appendChild(checkboxContainer);
+      
+    
+  });
+        
+    function completeTask(){
+          let cbs = document.getElementsByClassName("checkBox");
+          for (let i = 0; i < cbs.length; i++)
+          {
+            if (cbs[i].checked)
+            {
+              cbs[i].parentElement.parentElement.children[1].children[0].style.textDecoration = "line-through";
+            }
+            else
+            {
+              cbs[i].parentElement.parentElement.children[1].children[0].style.textDecoration = "line-through";
+            }
+          }
+        } 
+    
+}
+/*      
+function updateTaskTable(tasks) {
+  var table = document.getElementById("taskTable");
+  tasks.forEach((item, index) => {
+    if (item.type == 'task') {
+      var row = table.insertRow(index + 1);
+      
+      
+      //cell1.innerHTML = item.endDate;
+      var inputString = item.endDate;
+      var indexOfT = inputString.indexOf('T');
+      
+      //If 'T' is not found, return the original string as preceding and an empty string as following
+      if (indexOfT === -1) {
+        var cell1 = row.insertCell(0);
+        cell1.innerHTML = item.endDate;
+      }
+      
+      else
+      {
+      // Split the string based on the index of 'T'
+      var datestr = inputString.substring(0, indexOfT);
+      var time = inputString.substring(indexOfT + 1);
+      
+      var hour = time.substring(0, 2);
+      var minutes = time.substring(3);
+      console.log(hour, minutes, time)
+      var am = hour < 12;
+      var time2 = " "
+      var time3 = " "
+      if (am) {
+        time2 = hour + ":" + minutes + " AM";
+      }
+      else{
+        time3 = ((hour) - 12) + ":" + minutes " PM";
+      }
+      console.log(time2, time3)
+      var cell1 = row.insertCell(0);
+      
+      cell1.innerHTML = datestr + " " + time2;
+      }
+      var cell2 = row.insertCell(1);
+      cell2.innerHTML = item.name;
+
+      var cell3 = row.insertCell(2);
+  
+      // Create the container for the custom checkbox
+      var checkboxContainer = document.createElement("label");
+      checkboxContainer.classList.add("checkbox-container");
+
+      // Create the checkbox input element
+      var checkBox = document.createElement("input");
+      checkBox.type = "checkbox";
+      checkBox.checked = item.complete;
+      checkBox.classList.add("checkbox-style"); // Add the checkbox class
+
+      // Create the checkmark icon span element with X
+      var checkmark = document.createElement("span");
+      checkmark.classList.add("checkmark");
+      checkmark.innerHTML = "✕"; // X symbol
+
+      // Append the checkbox and checkmark to the container
+      checkboxContainer.appendChild(checkBox);
+      checkboxContainer.appendChild(checkmark);
+
+      // Append the container to the cell
+      cell3.appendChild(checkboxContainer);
+    }
+  });
+}*/
+      //alert(tasks.length);
+    /*
+      var output = [];
+      tasks.forEach((item) => {
+        if (item.type == "Task") {
+          let task = [];
+          task.push(item.userID);
+          task.push(item.name);
+          task.push(item.desc);
+          task.push(item.startDate);
+          task.push(item.endDate);
+          task.push(item.type);
+          task.push(item.complete);
+
+          output.push(task);
+        }
+      });
+
+      var taskstrs = [];
+      output.forEach((task) => {
+        let taskdata = [task[3], task[1], task[2]];
+        let taskstr = taskdata.join(" ");
+        taskstrs.push(taskstr);
+      });
+
+      for (let i = 1; i < taskstrs.length + 1; i++) {
+        var table = document.getElementById("taskTable");
+        var row = table.insertRow(i);
+        row.style = "background-color:#FFFFFF";
+        var cell1 = row.insertCell(0);
+        cell1.className = "checkBox";
+        cell1.innerHTML = "Working";
+
+        var checkBox = document.createElement("input");
+        checkBox.type = "checkbox";
+        var cell2 = row.insertCell(1);
+        cell2.innerHTML = '<input type="checkbox" onclick="completeTask()">';
+      }
+      */
+      /*
+        var taskTable = document.getElementById("leHead");
+        taskTable.innerHTML = "PogChamp";
+        
+        */
+
+      /*
+        for (let i = 0; i < 2; i++) {
+          var table = document.getElementById("taskTable");
+          var row = table.insertRow(i + 1); // Changed from i to i + 1
+          row.style.backgroundColor = "#FFFFFF"; // Changed style assignment
+          var cell1 = row.insertCell(0);
+          cell1.className = "checkBox";
+          cell1.innerHTML = taskstrs[i];
+
+          var checkBox = document.createElement("input");
+          checkBox.type = "checkbox";
+          var cell2 = row.insertCell(1);
+          cell2.appendChild(checkBox); // Changed from innerHTML assignment
+      }*/
+      /*
+        document.getElementById("addRow").addEventListener("click", function() {
+          var table = document.getElementById("taskTable");
+          var row = table.insertRow(1);
+          row.style = "background-color:#FFFFFF";
+          var cell1 = row.insertCell(0);
+          cell1.className = "checkBox";
+          cell1.innerHTML = "TASK ; DATE";
+
+
+          var checkBox = document.createElement("input");
+          checkBox.type = "checkbox";
+          var cell2 = row.insertCell(1);
+          cell2.innerHTML = '<input type="checkbox" onclick="completeTask()">';
+        });
+        */
+
+      
+        
+    </script>
+  </body>
+</html>

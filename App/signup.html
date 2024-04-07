@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WildTrax</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/script.js" defer></script>
+    <script src="/signUp.js" defer></script>
+  </head>
+  <body>
+    <center>
+      <h1>Sign up for WildTrax</h1>
+      <div class="wrapper">
+        <div
+          class="content"
+          role="main"
+          style="
+            background-color: #ffffff;
+            height: 40%;
+            width: 30%;
+            border: 1px solid #dddddd;
+            margin-bottom: 400px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+                 
+          "
+        >
+          <div class="container">
+            <form id="signUp">
+              <!--<label for="email" style="color: #8b0201"><strong>Email:</strong></label><br />-->
+              <input
+                type="text"
+                id="email"
+                name="email"
+                placeholder="Email"
+                style="color: #8b0201; width: 300px"
+              />
+              <br /><br />
+              <!--<label for="password" style="color: #8b0201;"><strong>Password:</strong></label><br />-->
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Password"
+                style="width: 300px"
+              /><br /><br />
+              <!--<label for="confirmPassword" style="color: #8b0201;"><strong>Confirm Password:</strong></label><br />-->
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                style="width: 300px"
+              /><br /><br />
+              <!--<button type="button" 
+              id="submitBtn"
+              onmouseover="this.style.background='#8b0201'; this.style.color='#F3F3F3'; this.style.borderColor='#000000';"
+              onmouseout="this.style.background='#F3F3F3'; this.style.color='#8b0201'; this.style.borderColor='#000000';"
+              onclick="window.location.href = 'index.html';">
+               <strong>Sign Up</strong></button>-->
+
+              <a href="index.html">
+                <button
+                  type="button"
+                  onmouseover="this.style.background='#8b0201'; this.style.color='#F3F3F3'; this.style.borderColor='#000000';"
+                  onmouseout="this.style.background='#F3F3F3'; this.style.color='#8b0201'; this.style.borderColor='#000000';"
+                  style="width: 300px"
+                >
+                  <strong>Create Account</strong>
+                </button>
+                </a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </center>
+  </body>
+</html>

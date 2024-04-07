@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Task</title>
+  <!-- The website stylesheet -->
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <h1><center>Add Task</center></h1>
+  <center>
+    <button type="button" class="collapsible">
+      <center><strong>Menu</strong></center>
+    </button>
+    <div class="content">
+      <ul>
+        <br />
+        <br />
+        <li><a href="todo.html">To Do</a></li>
+        <li><a href="addevent.html">Add Event</a></li>
+        <li><a href="calendar.html">Calendar</a></li>
+        <li><a href="index.html">Sign Out</a></li>
+        <br />
+        <br />
+      </ul>
+    </div>
+    <style>
+      .content {
+        padding: 0 18px;
+        background-color: white;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+      }
+    </style>
+
+    <br />
+    <script>
+      var coll = document.getElementsByClassName("collapsible");
+      var i;
+
+      for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+          this.classList.toggle("active");
+          var content = this.nextElementSibling;
+          if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+          } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+          }
+        });
+      }
+    </script>
+    <form id="taskForm">
+      
+      <input type="text" id="taskName" name="taskName" placeholder="Task Name:" style="width: 60%;"/><br /><br />
+      <textarea id="description" name="description" placeholder="Description:" style="resize: none; height: 200px; width: 60%;"></textarea>
+      <br />
+      <label for="dateTime" style="width: 60%; color: #8b0201;"><strong>Deadline:</strong></label>
+      <br />
+      <input type="datetime-local" id="dateTime" name="dateTime" style="width: 60%; color: #333333;"><br /><br />
+      <button type="button" 
+              id="submitBtn"
+              onmouseover="this.style.background='#8b0201'; this.style.color='#F3F3F3'; this.style.borderColor='#000000';"
+              onmouseout="this.style.background='#F3F3F3'; this.style.color='#8b0201'; this.style.borderColor='#000000';"
+              > <strong>Submit</strong></button>
+    </form>
+  </center>
+
+  <script>
+    document.getElementById("submitBtn").addEventListener("click", function() {
+      collectFormData();
+    });
+
+    function collectFormData() {
+      var taskName = document.getElementById("taskName").value;
+      var description = document.getElementById("description").value;
+      var dateTime = document.getElementById("dateTime").value;
+      
+      console.log(dateTime, taskName, description)
+      
+      // const userID = sessionStorage.getItem('userID')
+      taskID = "task_" + Date.now()
+      
+      const task = {
+        userID: 'user123', // replace with userID when sign in works 
+        name: taskName,
+        desc: description,
+        endDate: dateTime,
+        type: 'task',
+        taskID: taskID // some random hash
+      }
+      fetch('https://gqn16jjel6.execute-api.us-east-2.amazonaws.com/serverless_lambda_stage/putTask', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body : JSON.stringify(task)
+      })
+      .then(response => {
+        if (!response.ok){
+          throw new Error('Error')
+        }
+        return response.json()
+        
+      })
+      .then(data => {
+        console.log("Added")
+      })
+      .catch(error => {
+        console.log("Error: ", error)
+      })
+      
+      
+      
+    
+      // Clear the form fields
+      document.getElementById("taskName").value = "";
+      document.getElementById("description").value = "";
+      document.getElementById("dateTime").value = "";
+
+      // You can do whatever you want with the collected data here, such as sending it to a server or displaying it on the page
+      console.log("Task Name: " + taskName);
+      console.log("Description: " + description);
+      console.log("Date and Time: " + dateTime);
+    }
+  </script>
+</body>
+</html>

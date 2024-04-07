@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Event</title>
+  <!-- The website stylesheet -->
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <h1><center>Add Event</center></h1>
+  <center>
+    <button type="button" class="collapsible">
+      <center><strong>Menu</strong></center>
+    </button>
+    <div class="content">
+      <ul>
+        <br />
+        <br />
+        <li><a href="todo.html">To Do</a></li>
+        <li><a href="calendar.html">Calendar</a></li>
+        <li><a href="addtask.html">Add Task</a></li>
+        <li><a href="index.html">Sign Out</a></li>
+        <br />
+        <br />
+      </ul>
+    </div>
+    <style>
+      .content {
+        padding: 0 18px;
+        background-color: white;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+      }
+    </style>
+
+    <br />
+    <script>
+      var coll = document.getElementsByClassName("collapsible");
+      var i;
+
+      for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+          this.classList.toggle("active");
+          var content = this.nextElementSibling;
+          if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+          } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+          }
+        });
+      }
+    </script>
+  
+    <form id="eventForm">
+    
+      <input type="text" id="eventName" name="eventName" placeholder="Event Name:" style="width: 60%;"/><br /><br />
+      <textarea id="description" name="description" placeholder="Description:" style="resize: none; height: 200px; width: 60%;"></textarea><br />
+      <label for="startDateTime" style="width: 60%; color: #8b0201;"><strong>Starts:</strong></label><br />
+      <input type="datetime-local" id="startDateTime" name="startDateTime" style="width: 60%; color: #333333;"><br />
+      <label for="endDateTime" style="width: 60%; color: #8b0201;"><strong>Ends:</strong></label><br />
+      <input type="datetime-local" id="endDateTime" name="endDateTime" style="width: 60%; color: #333333;"><br /><br />
+      <button 
+              type="submit" 
+              id="submitBtn"
+              onmouseover="this.style.background='#8b0201'; this.style.color='#FFFFFF'; this.style.borderColor='#000000';"
+              onmouseout="this.style.background='#F3F3F3'; this.style.color='#8b0201'; this.style.borderColor='#000000';"
+              ><strong>Submit</strong></button>
+    </form>
+  </center>
+  
+  <script>
+    document.getElementById("eventForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent the default form submission
+      collectFormData();
+    });
+
+    function collectFormData() {
+      var eventName = document.getElementById("eventName").value;
+      var description = document.getElementById("description").value;
+      var startDateTime = document.getElementById("startDateTime").value;
+      var endDateTime = document.getElementById("endDateTime").value;
+      
+      const task = {
+        userID: 'user123', // replace with userID when sign in works 
+        name: eventName,
+        desc: description,
+        endDate: endDateTime,
+        startDate: startDateTime,
+        type: 'event',
+        taskID: '3' //reapcle with some random hash
+      }
+      fetch('https://gqn16jjel6.execute-api.us-east-2.amazonaws.com/serverless_lambda_stage/putTask', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body : JSON.stringify(task)
+      })
+      .then(response => {
+        if (!response.ok){
+          throw new Error('Error')
+        }
+        return response.json()
+        
+      })
+      .then(data => {
+        console.log("Added")
+      })
+      .catch(error => {
+        console.log("Error: ", error)
+      })
+
+      // Clear the form fields
+      document.getElementById("eventName").value = "";
+      document.getElementById("description").value = "";
+      document.getElementById("startDateTime").value = "";
+      document.getElementById("endDateTime").value = "";
+
+      // You can do whatever you want with the collected data here, such as sending it to a server or displaying it on the page
+      console.log("Event Name: " + eventName);
+      console.log("Description: " + description);
+      console.log("Start Date and Time: " + startDateTime);
+      console.log("End Date and Time: " + endDateTime);
+    }
+  </script>
+</body>
+</html>

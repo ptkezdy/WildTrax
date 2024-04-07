@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendar</title>
+    <style>
+      table {
+        width: 70%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 20px;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+    <!-- The website stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <h1><center>Calendar</center></h1>
+  <center>
+    <button type="button" class="collapsible">
+      <center><strong>Menu</strong></center>
+    </button>
+    <div class="content">
+      <ul>
+        <br />
+        <br />
+        <li><a href="todo.html">To Do</a></li>
+        <li><a href="addevent.html">Add Event</a></li>
+        <li><a href="addtask.html">Add Task</a></li>
+        <li><a href="index.html">Sign Out</a></li>
+        <br />
+        <br />
+      </ul>
+    </div>
+    <style>
+      .content {
+        padding: 0 18px;
+        background-color: white;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+      }
+    </style>
+
+    <br />
+    <script>
+      var coll = document.getElementsByClassName("collapsible");
+      var i;
+
+      for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+          this.classList.toggle("active");
+          var content = this.nextElementSibling;
+          if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+          } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+          }
+        });
+      }
+    </script>
+    <center>
+      <h2>
+        <div id="Month">
+        </div>
+      </h2>
+      <table class="styled-table" id="calendarTable">
+        <thead>
+          <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+          </tr>
+        </thead>
+      </table>
+      <br />
+      <a href="addevent.html">
+        <button type="button" id="addEventBtn" onmouseover="this.style.background='#8b0201'; this.style.color='#FFFFFF'; this.style.borderColor='#000000';" onmouseout="this.style.background='#F3F3F3'; this.style.color='#8b0201'; this.style.borderColor='#000000';">
+          <strong>Add Event</strong>
+        </button></a>
+    </center>
+    <script src="cal.js"></script>
+    </center>
+  </body>
+</html>
